@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map-SO2</title>
+    <meta charset="utf-8">
+    <link href="css/d3.geomap.css" rel="stylesheet">
+    <script src="D3/d3.geomap.dependencies.min.js"></script>
+    <script src="D3/d3.geomap.min.js"></script>
+    <style>
+        a:link, a:visited {
+            background-color:green;
+            color: white;
+            padding: 14px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+
+        a:hover, a:active {
+            background-color: blue;
+        }
+    </style>
+   </head>
+<body>
+<a href="home2.html" target="_self"><strong>HOME</strong></a><br/>
+<h1>Map-SO2 Average AQI-2016</h1>
+<div id="map"></div>
+<script>
+    var format = function(d) {
+        d = d/1;
+        return d3.format(',.02f')(d);
+    }
+    var map = d3.geomap.choropleth()
+        .geofile('D3/USA.json')
+        .projection(d3.geo.albersUsa)
+        .colors(colorbrewer.YlGnBu[9])
+        .column('2016')
+        .format(format)
+        .unitId('fips')
+        .scale(900)
+        .legend(true);
+
+    d3.csv('data3/data.csv', function(error, data) {
+        d3.select('#map')
+            .datum(data)
+            .call(map.draw, map);
+    });
+</script>
+</body>
+</html>
